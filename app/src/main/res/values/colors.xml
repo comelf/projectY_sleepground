@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="background_white">#ffffff</color>
+    <color name="background_gray">#E6E9EE</color>
+    <color name="background_black">#000</color>
+
+    <color name="drawer_background">#656D78</color>
+    <color name="drawer_setting">#434A54</color>
+
+    <color name="text_dark_gray">#313131</color>
+    <color name="text_main">#777777</color>
+    <color name="text_sub">#999999</color>
+    <color name="text_light_gray">#d9dadc</color>
+    <color name="text_white">#ffffff</color>
+
+    <color name="theme_color1">#3BAFDA</color>
+    <color name="theme_color2">#4FC1E9</color>
+    <color name="theme_point">#FC6E51</color>
+    <color name="theme_button">#E9573F</color>
+
+
+</resources>

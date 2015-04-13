@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:clickable="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/video_thumbnail_i"
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:scaleType="fitXY"
+            android:background="@color/background_black"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:background="@color/background_black"
+            android:alpha="0.8"
+            android:layout_alignParentTop="true"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:paddingTop="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center"
+                android:gravity="center">
+
+                <ImageButton
+                    android:id="@+id/playButton"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:scaleType="fitXY"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/button_play_on"/>
+
+                <ImageButton
+                    android:id="@+id/favoriteButton"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:scaleType="fitXY"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/button_favorite_on"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/video_title_i"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="꿀재미 게스트!![위험한 초대:금칙어 게임#도타편] 마인크래프트 MineCraft"
+                android:gravity="center"
+                android:lines="2"
+                android:textStyle="bold"
+                android:layout_margin="5dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/video_date_i"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="2015.01.01"
+                    android:textAlignment="center"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+    </RelativeLayout>
+
+
+
+    <ListView
+        android:id="@+id/play_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:divider="@null"
+        android:layout_weight="1"
+        android:background="@color/background_gray">
+
+
+        </ListView>
+
+
+</LinearLayout>

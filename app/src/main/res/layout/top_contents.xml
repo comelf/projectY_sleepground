@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true">
+
+    <ImageView
+        android:id="@+id/content_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:background="@color/background_black"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:background="@drawable/shade"
+        android:layout_alignParentBottom="true"
+         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:paddingBottom="25dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/content_date"
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:text=""
+                android:textAlignment="center"
+                android:textSize="12dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="10dp">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitXY"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_play_wht"
+                    android:layout_gravity="center_vertical"/>
+                <TextView
+                    android:id="@+id/content_playButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:textSize="12dp"
+                    android:background="@android:color/transparent"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"/>
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="15dp">
+
+                <ImageView
+                    android:layout_width="10dp"
+                    android:layout_height="20dp"
+                    android:scaleType="fitXY"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/ic_like_wht"
+                    android:layout_gravity="center_vertical"/>
+                <TextView
+                    android:id="@+id/content_likeButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:textSize="12dp"
+                    android:background="@android:color/transparent"
+                    android:text=""
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"/>
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
+
+</RelativeLayout>
