@@ -22,7 +22,7 @@ public abstract class GetRecommandlistAsyncTask extends AsyncTask<String, Void, 
     protected Uri.Builder mUriBuilder;
     private String PATH = "/get_recommend";
     private static final String YOUTUBE_VIDEOLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=";
-    private static final String YOUTUBE_PLAYLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&playlistId=";
+    private static final String YOUTUBE_PLAYLISTITEMS_URL = "https://www.googleapis.com/youtube/v3/playlistItems?part=snippet,contentDetails&maxResults=50&playlistId=";
     private static final String YOUTUBE_KEY = "&key=AIzaSyDrp3hVd7PBIryKmk3nBcPIoxTOX5kTPvQ";
 
     @Override
@@ -54,6 +54,8 @@ public abstract class GetRecommandlistAsyncTask extends AsyncTask<String, Void, 
         try {
             jsonObject = new JSONObject();
             jsonObject.put("video_list",new JSONObject(result_play));
+            
+            
             jsonObject.put("cover_list",new JSONObject(result_cover));
             jsonObject.put("video_id", play_list);
 

@@ -103,7 +103,7 @@ public class SettingFragment extends Fragment implements GoogleApiClient.Connect
 
                 }else{
                     Toast.makeText(getActivity(),
-                            "구글서버에 연겷할수 없습니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show();
+                            "구글서버에 연결할 수 없습니다. 다시 시도해주세요.", Toast.LENGTH_LONG).show();
                 }
                 break;
 
