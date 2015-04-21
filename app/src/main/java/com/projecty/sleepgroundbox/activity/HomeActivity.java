@@ -254,23 +254,6 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             btn.setTypeface(font);
         }
     }
-    
-//    private Boolean isFull(){
-//        int size = getSupportFragmentManager().getBackStackEntryCount();
-//        if ( size > 10){
-//
-//
-//            Toast toast2 = Toast.makeText(getApplicationContext(),
-//                    "gooooood.", Toast.LENGTH_SHORT);
-//            toast2.setGravity(Gravity.CENTER, 0, 0);
-//            toast2.show();
-////            getFragmentManager().popBackStackImmediate();
-//
-//            return true;
-//        }
-//        return false;
-//    }
-//
 
     @Override
     public void onClick(View v) {
@@ -398,7 +381,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.bj7:
                 toolbar.setTitle("찬이 BOX");
-                setLayoutBackgroundColor(BJ6_LAYOUT);
+                setLayoutBackgroundColor(BJ7_LAYOUT);
                 SandboxNetworkFragment fr7 = new SandboxNetworkFragment();
                 fr7.setSandboxId("UUt51IEo3ZxxOysVAG_ylR6w");
                 getSupportFragmentManager().beginTransaction()
