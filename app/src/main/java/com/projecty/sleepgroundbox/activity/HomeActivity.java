@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -76,6 +77,39 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
     public UserProfile user;
 
+    @Override
+    public boolean onKeyDown(int keyCode,KeyEvent event)
+    {
+
+        int num = getSupportFragmentManager().getBackStackEntryCount();
+        if(num ==1 && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+        {
+            // 팝업을 띄움
+
+            AlertDialog dialog;
+            dialog = new AlertDialog.Builder(this)
+                    // .setIcon(R.drawable.warning)
+                    .setMessage("종료하시겠습니까?")
+                    .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO Auto-generated method stub
+                            //dialog.dismiss();
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+                            // TODO Auto-generated method stub
+                            dialog.cancel();
+                        }
+                    })
+                    .show();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
