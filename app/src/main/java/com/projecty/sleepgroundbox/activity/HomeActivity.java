@@ -114,7 +114,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
         } else if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new VideoFragment())
+                    .replace(R.id.container, new VideoFragment()).addToBackStack(null)
                     .commit();
         }
 
@@ -254,6 +254,23 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             btn.setTypeface(font);
         }
     }
+    
+//    private Boolean isFull(){
+//        int size = getSupportFragmentManager().getBackStackEntryCount();
+//        if ( size > 10){
+//
+//
+//            Toast toast2 = Toast.makeText(getApplicationContext(),
+//                    "gooooood.", Toast.LENGTH_SHORT);
+//            toast2.setGravity(Gravity.CENTER, 0, 0);
+//            toast2.show();
+////            getFragmentManager().popBackStackImmediate();
+//
+//            return true;
+//        }
+//        return false;
+//    }
+//
 
     @Override
     public void onClick(View v) {
@@ -261,8 +278,9 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         switch (v.getId()){
             case R.id.settingButton:
                 toolbar.setTitle("설정");
+
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new SettingFragment())
+                        .replace(R.id.container, new SettingFragment()).addToBackStack(null)
                         .commit();
 
                 break;
@@ -284,42 +302,43 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 toolbar.setTitle("홈");
                 setLayoutBackgroundColor(HOME_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new VideoFragment())
+                        .replace(R.id.container, new VideoFragment()).addToBackStack(null)
                         .commit();
                 break;
             case R.id.playlistButton:
                 toolbar.setTitle("재생목록");
                 setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new PlayListFragment())
+                        .replace(R.id.container, new PlayListFragment()).addToBackStack(null)
                         .commit();
                 break;
             case R.id.favoriteButton:
                 toolbar.setTitle("즐겨찾기");
                 setLayoutBackgroundColor(FAVORITE_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new FavoriteFragment())
+                        .replace(R.id.container, new FavoriteFragment()).addToBackStack(null)
                         .commit();
                 break;
             case R.id.featuredButton:
                 toolbar.setTitle("추천영상");
                 setLayoutBackgroundColor(FEATURED_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new RecommendFragment())
+                        .replace(R.id.container, new RecommendFragment()).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bjlogButton:
                 toolbar.setTitle("잠뜰로그");
                 setLayoutBackgroundColor(BJLOG_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new BjLogFragment())
+                        .replace(R.id.container, new BjLogFragment()).addToBackStack(null)
                         .commit();
                 break;
             case R.id.communityButton:
                 toolbar.setTitle("커뮤니티");
                 setLayoutBackgroundColor(COMMUNITY_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new CommunityFragment())
+                        .replace(R.id.container, new CommunityFragment()).addToBackStack(null)
                         .commit();
 
                 break;
@@ -329,7 +348,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr1 = new SandboxNetworkFragment();
                 fr1.setSandboxId("UUhQ-VMvdGrYZxviQVMTJOHg");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr1)
+                        .replace(R.id.container,fr1).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj2:
@@ -338,7 +357,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr2 = new SandboxNetworkFragment();
                 fr2.setSandboxId("UUtCnnCUn9IDDQRU9_04JD3g");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr2)
+                        .replace(R.id.container,fr2).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj3:
@@ -347,7 +366,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr3 = new SandboxNetworkFragment();
                 fr3.setSandboxId("UUEPuItFWOOJ2o5hTu65NlEg");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr3)
+                        .replace(R.id.container,fr3).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj4:
@@ -356,7 +375,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr4 = new SandboxNetworkFragment();
                 fr4.setSandboxId("UUxmBxNybpaLO7x61dm0oD8w");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr4)
+                        .replace(R.id.container,fr4).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj5:
@@ -365,7 +384,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr5 = new SandboxNetworkFragment();
                 fr5.setSandboxId("UUT_Sf9z6Cqy11VHOfbnQPNQ");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr5)
+                        .replace(R.id.container,fr5).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj6:
@@ -374,7 +393,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr6 = new SandboxNetworkFragment();
                 fr6.setSandboxId("UUiwOunGuqfKjcLIBsteAAJQ");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr6)
+                        .replace(R.id.container,fr6).addToBackStack(null)
                         .commit();
                 break;
             case R.id.bj7:
@@ -383,7 +402,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr7 = new SandboxNetworkFragment();
                 fr7.setSandboxId("UUt51IEo3ZxxOysVAG_ylR6w");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr7)
+                        .replace(R.id.container,fr7).addToBackStack(null)
                         .commit();
                 break;
 
