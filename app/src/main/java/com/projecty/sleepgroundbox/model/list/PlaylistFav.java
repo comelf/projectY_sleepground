@@ -28,14 +28,14 @@ public class PlaylistFav extends PlayList {
 
 
     public PlaylistFav(JSONObject jsonPlaylist) throws JSONException, ParseException {
-       super(jsonPlaylist);
+        super(jsonPlaylist);
     }
 
     public void addPage(JSONObject jsonPlaylist) throws JSONException, ParseException {
         pages.add(new PlayPage(
                 jsonPlaylist.getJSONArray("items"),
-                jsonPlaylist.getString("etag")
-        ) {
+                jsonPlaylist.getString("etag"),
+                jsonPlaylist.optString("nextPageToken", null)) {
             @Override
             protected PlayItem getPlayItem(JSONObject item) throws JSONException, ParseException {
                 return new PlaylistItem(item);
