@@ -6,10 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.projecty.sleepgroundbox"
-        minSdkVersion 9
+        minSdkVersion 11
         targetSdkVersion 22
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.2"
     }
     buildTypes {
         release {

@@ -27,7 +27,8 @@ import com.projecty.sleepgroundbox.model.base.PlayItem;
 import com.projecty.sleepgroundbox.model.base.StatisticsItem;
 import com.projecty.sleepgroundbox.model.list.CrewVideolist;
 import com.projecty.sleepgroundbox.model.list.PlaylistFav;
-import com.projecty.sleepgroundbox.util.Global;
+import com.projecty.sleepgroundbox.task.GetSandboxPlaylistAsyncTask;
+import com.projecty.sleepgroundbox.task.GetSandboxVideoAsyncTask;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -208,7 +209,7 @@ public class SandboxNetworkFragment extends Fragment implements View.OnClickList
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         // initialize our etag cache for this playlist
-        File cacheFile = new File(activity.getFilesDir(), Global.YOUTUBE_PLAYLIST);
+        File cacheFile = new File(activity.getFilesDir(), youtube_playlist);
         mEtagCache = EtagCache.create(cacheFile, EtagCache.FIVE_MB);
     }
 

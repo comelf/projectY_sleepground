@@ -60,6 +60,7 @@ public class SearchResultFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.playlist_fragment, container, false);
         mListView = (ListView) rootView.findViewById(R.id.playlist_listview);
 
+
         if (mVideolist != null) {
             initListAdapter(mVideolist);
         }
@@ -81,6 +82,7 @@ public class SearchResultFragment extends Fragment {
             }
         }.execute(Global.YOUTUBE_PLAYLIST, query);
         asyncTasks.add(async);
+
 
         return rootView;
     }

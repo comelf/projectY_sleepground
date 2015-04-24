@@ -7,6 +7,7 @@ import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -67,6 +68,22 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     private static final int BJ5_LAYOUT = 10;
     private static final int BJ6_LAYOUT = 11;
     private static final int BJ7_LAYOUT = 12;
+    private static final String SET = "set";
+    private static final String HOME = "home";
+    private static final String PLAYLIST = "playlist";
+    private static final String FAVORITE = "favorite";
+    private static final String RECOMMEND= "recommend";
+    private static final String DLOG = "dlog";
+    private static final String COMMUNITY = "community";
+    private static final String BJ1 = "bj1";
+    private static final String BJ2 = "bj2";
+    private static final String BJ3 = "bj3";
+    private static final String BJ4 = "bj4";
+    private static final String BJ5 = "bj5";
+    private static final String BJ6 = "bj6";
+    private static final String BJ7 = "bj7";
+
+    private Boolean dlogState = false;
 
     private List<FrameLayout> layoutList = new ArrayList<FrameLayout>();
     Toolbar toolbar;
@@ -78,11 +95,10 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     public UserProfile user;
 
     @Override
-    public boolean onKeyDown(int keyCode,KeyEvent event)
-    {
+    public boolean onKeyDown(int keyCode,KeyEvent event) {
 
         int num = getSupportFragmentManager().getBackStackEntryCount();
-        if(num ==1 && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
+        if(num <= 1 && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
         {
             // 팝업을 띄움
 
@@ -106,8 +122,13 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                     })
                     .show();
             return true;
+        } else {
+            FragmentManager.BackStackEntry topFr = getSupportFragmentManager().getBackStackEntryAt(num - 2);
+            String name = topFr.getName();            
+            backStack(name);
+            getSupportFragmentManager().popBackStackImmediate();
+            return true;
         }
-        return super.onKeyDown(keyCode, event);
     }
     
     @Override
@@ -147,8 +168,9 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             dialog.show();
 
         } else if (savedInstanceState == null) {
+            String tag=HOME;
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new VideoFragment()).addToBackStack(null)
+                    .replace(R.id.container, new VideoFragment(), tag).addToBackStack(tag)
                     .commit();
         }
 
@@ -186,7 +208,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SearchResultFragment fragment = new SearchResultFragment();
                 fragment.setQuery(s);
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, fragment,"SEARCH_RESULT")
+                        .replace(R.id.container, fragment,"SEARCH_RESULT")
                         .commit();
                 return false;
             }
@@ -211,7 +233,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.container, new SearchFragment(),"SEARCH")
+                        .replace(R.id.container, new SearchFragment(),"SEARCH")
                         .commit();
             }
         });
@@ -220,6 +242,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             public boolean onClose() {
                 closeFragment();
                 return false;
+                
             }
         });
 
@@ -229,15 +252,11 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     private void closeFragment() {
         Fragment search = getSupportFragmentManager().findFragmentByTag("SEARCH");
         if(search!=null) {
-            getSupportFragmentManager().beginTransaction()
-                    .remove(search)
-                    .commit();
+            getSupportFragmentManager().popBackStack(search.getId(),0);
         }
         Fragment search_result = getSupportFragmentManager().findFragmentByTag("SEARCH_RESULT");
         if(search_result!=null) {
-            getSupportFragmentManager().beginTransaction()
-                    .remove(search_result)
-                    .commit();
+            getSupportFragmentManager().popBackStack(search_result.getId(),0);
         }
     }
 
@@ -292,12 +311,14 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
     @Override
     public void onClick(View v) {
 
+        String tag;
+
         switch (v.getId()){
             case R.id.settingButton:
                 toolbar.setTitle("설정");
-
+                tag =SET;
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new SettingFragment()).addToBackStack(null)
+                        .replace(R.id.container, new SettingFragment(), tag).addToBackStack(tag)
                         .commit();
 
                 break;
@@ -317,116 +338,129 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 //                break;
             case R.id.homeButton:
                 toolbar.setTitle("홈");
+                tag = HOME;
                 setLayoutBackgroundColor(HOME_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new VideoFragment()).addToBackStack(null)
+                        .replace(R.id.container, new VideoFragment(), tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.playlistButton:
                 toolbar.setTitle("재생목록");
+                tag =PLAYLIST;
                 setLayoutBackgroundColor(PLAYLIST_LAYOUT);
-
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new PlayListFragment()).addToBackStack(null)
+                        .replace(R.id.container, new PlayListFragment(),tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.favoriteButton:
                 toolbar.setTitle("즐겨찾기");
+                tag =FAVORITE;
                 setLayoutBackgroundColor(FAVORITE_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new FavoriteFragment()).addToBackStack(null)
+                        .replace(R.id.container, new FavoriteFragment(),tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.featuredButton:
                 toolbar.setTitle("추천영상");
+                tag=RECOMMEND;
                 setLayoutBackgroundColor(FEATURED_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new RecommendFragment()).addToBackStack(null)
+                        .replace(R.id.container, new RecommendFragment(), tag).addToBackStack(tag)
                         .commit();
                 break;
+
             case R.id.bjlogButton:
+                tag=DLOG;
                 toolbar.setTitle("잠뜰로그");
                 setLayoutBackgroundColor(BJLOG_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new BjLogFragment()).addToBackStack(null)
+                        .replace(R.id.container, new BjLogFragment(), tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.communityButton:
+                tag=COMMUNITY;
                 toolbar.setTitle("커뮤니티");
                 setLayoutBackgroundColor(COMMUNITY_LAYOUT);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new CommunityFragment()).addToBackStack(null)
+                        .replace(R.id.container, new CommunityFragment(), tag).addToBackStack(tag)
                         .commit();
 
                 break;
             case R.id.bj1:
                 toolbar.setTitle("도티 BOX");
+                tag=BJ1;
                 setLayoutBackgroundColor(BJ1_LAYOUT);
                 SandboxNetworkFragment fr1 = new SandboxNetworkFragment();
                 fr1.setSandboxId("UUhQ-VMvdGrYZxviQVMTJOHg");
                 fr1.setSandboxCh("UChQ-VMvdGrYZxviQVMTJOHg");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container,fr1).addToBackStack(null)
+                        .replace(R.id.container,fr1, tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.bj2:
+                tag=BJ2;
                 toolbar.setTitle("쁘허 BOX");
                 setLayoutBackgroundColor(BJ2_LAYOUT);
                 SandboxNetworkFragment fr2 = new SandboxNetworkFragment();
                 fr2.setSandboxId("UUtCnnCUn9IDDQRU9_04JD3g");
                 fr2.setSandboxCh("UCtCnnCUn9IDDQRU9_04JD3g");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fr2).addToBackStack(null)
+                        .replace(R.id.container, fr2, tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.bj3:
+                tag=BJ3;
                 toolbar.setTitle("태경 BOX");
                 setLayoutBackgroundColor(BJ3_LAYOUT);
                 SandboxNetworkFragment fr3 = new SandboxNetworkFragment();
                 fr3.setSandboxId("UUEPuItFWOOJ2o5hTu65NlEg");
                 fr3.setSandboxCh("UCEPuItFWOOJ2o5hTu65NlEg");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fr3).addToBackStack(null)
+                        .replace(R.id.container, fr3, tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.bj4:
+                tag=BJ4;
                 toolbar.setTitle("빅민 BOX");
                 setLayoutBackgroundColor(BJ4_LAYOUT);
                 SandboxNetworkFragment fr4 = new SandboxNetworkFragment();
                 fr4.setSandboxId("UUxmBxNybpaLO7x61dm0oD8w");
                 fr4.setSandboxCh("UCxmBxNybpaLO7x61dm0oD8w");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fr4).addToBackStack(null)
+                        .replace(R.id.container, fr4, tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.bj5:
+                tag=BJ5;
                 toolbar.setTitle("비콘 BOX");
                 setLayoutBackgroundColor(BJ5_LAYOUT);
                 SandboxNetworkFragment fr5 = new SandboxNetworkFragment();
                 fr5.setSandboxId("UUT_Sf9z6Cqy11VHOfbnQPNQ");
                 fr5.setSandboxCh("UCT_Sf9z6Cqy11VHOfbnQPNQ");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fr5).addToBackStack(null)
+                        .replace(R.id.container, fr5, tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.bj6:
+                tag=BJ6;
                 toolbar.setTitle("퀸톨 BOX");
                 setLayoutBackgroundColor(BJ6_LAYOUT);
                 SandboxNetworkFragment fr6 = new SandboxNetworkFragment();
                 fr6.setSandboxId("UUiwOunGuqfKjcLIBsteAAJQ");
                 fr6.setSandboxCh("UCiwOunGuqfKjcLIBsteAAJQ");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fr6).addToBackStack(null)
+                        .replace(R.id.container, fr6, tag).addToBackStack(tag)
                         .commit();
                 break;
             case R.id.bj7:
+                tag=BJ7;
                 toolbar.setTitle("찬이 BOX");
                 setLayoutBackgroundColor(BJ7_LAYOUT);
                 SandboxNetworkFragment fr7 = new SandboxNetworkFragment();
                 fr7.setSandboxId("UUt51IEo3ZxxOysVAG_ylR6w");
                 fr7.setSandboxCh("UCt51IEo3ZxxOysVAG_ylR6w");
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fr7).addToBackStack(null)
+                        .replace(R.id.container, fr7, tag).addToBackStack(tag)
                         .commit();
                 break;
 
@@ -466,6 +500,71 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
         @Override
         public void onClick(View v) {
+
+        }
+    }
+    public void backStack(String fr) {
+
+        switch (fr){
+            case SET:
+                toolbar.setTitle("설정");
+                break;
+            case HOME:
+                toolbar.setTitle("홈");
+                setLayoutBackgroundColor(HOME_LAYOUT);
+                break;
+            case PLAYLIST:
+                toolbar.setTitle("재생목록");
+                setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+                break;
+            case FAVORITE:
+                toolbar.setTitle("즐겨찾기");
+                setLayoutBackgroundColor(FAVORITE_LAYOUT);
+
+                break;
+            case RECOMMEND:
+                toolbar.setTitle("추천영상");
+                setLayoutBackgroundColor(FEATURED_LAYOUT);
+                break;
+            case DLOG:
+                toolbar.setTitle("잠뜰로그");
+                setLayoutBackgroundColor(BJLOG_LAYOUT);
+                break;
+            case COMMUNITY:
+                toolbar.setTitle("커뮤니티");
+                setLayoutBackgroundColor(COMMUNITY_LAYOUT);
+
+                break;
+            case BJ1:
+                toolbar.setTitle("도티 BOX");
+                setLayoutBackgroundColor(BJ1_LAYOUT);
+                break;
+            case BJ2:
+                toolbar.setTitle("쁘허 BOX");
+                setLayoutBackgroundColor(BJ2_LAYOUT);
+                break;
+            case BJ3:
+                toolbar.setTitle("태경 BOX");
+                setLayoutBackgroundColor(BJ3_LAYOUT);
+                break;
+            case BJ4:
+                toolbar.setTitle("빅민 BOX");
+                setLayoutBackgroundColor(BJ4_LAYOUT);
+                break;
+            case BJ5:
+                toolbar.setTitle("비콘 BOX");
+                setLayoutBackgroundColor(BJ5_LAYOUT);
+                break;
+            case BJ6:
+                toolbar.setTitle("퀸톨 BOX");
+                setLayoutBackgroundColor(BJ6_LAYOUT);
+                break;
+            case BJ7:
+                toolbar.setTitle("찬이 BOX");
+                setLayoutBackgroundColor(BJ7_LAYOUT);
+                break;
+            default:
+                break;
 
         }
     }
