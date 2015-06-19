@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,7 +15,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +23,8 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mocoplex.adlib.AdlibManager;
+import com.mocoplex.adlib.dlg.AdlibDialogAdListener;
 import com.projecty.sleepgroundbox.R;
 import com.projecty.sleepgroundbox.fragment.BjLogFragment;
 import com.projecty.sleepgroundbox.fragment.CommunityFragment;
@@ -85,6 +87,12 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
     private Boolean dlogState = false;
 
+    private AdlibManager _amanager;
+
+    // 애드립 광고를 테스트 하기 위한 키 입니다.
+    private String ADLIB_API_KEY = "5574c9080cf2d5747f1ccdc5";
+    
+
     private List<FrameLayout> layoutList = new ArrayList<FrameLayout>();
     Toolbar toolbar;
     DrawerLayout dlDrawer;
@@ -94,40 +102,60 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
 
     public UserProfile user;
 
+
     @Override
-    public boolean onKeyDown(int keyCode,KeyEvent event) {
-
+    public void onBackPressed() {
         int num = getSupportFragmentManager().getBackStackEntryCount();
-        if(num <= 1 && keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0)
-        {
-            // 팝업을 띄움
+        if(num <= 1){
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                int[] colors = new int[]{0xffffffff, 0xffa8a8a8, 0xff404040, 0xff404040, 0xffdfdfdf};
+                _amanager.showAdDialog("취소", "확인", "App 을 정말로 종료하시겠습니까?", colors, new AdlibDialogAdListener() {
 
-            AlertDialog dialog;
-            dialog = new AlertDialog.Builder(this)
-                    // .setIcon(R.drawable.warning)
-                    .setMessage("종료하시겠습니까?")
-                    .setPositiveButton("예", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // TODO Auto-generated method stub
-                            //dialog.dismiss();
-                            finish();
-                        }
-                    })
-                    .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onLeftClicked() {
+                    }
 
-                        public void onClick(DialogInterface dialog, int which) {
-                            // TODO Auto-generated method stub
-                            dialog.cancel();
-                        }
-                    })
-                    .show();
-            return true;
-        } else {
+                    @Override
+                    public void onRightClicked() {
+                        HomeActivity.this.finish();
+                    }
+                });
+            } else {
+                AlertDialog dialog;
+                dialog = new AlertDialog.Builder(this)
+                        // .setIcon(R.drawable.warning)
+                        .setMessage("종료하시겠습니까?")
+                        .setPositiveButton("예", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                                //dialog.dismiss();
+                                finish();
+                            }
+                        })
+                        .setNegativeButton("아니요", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                // TODO Auto-generated method stub
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+            }
+        }
+
+        else {
             FragmentManager.BackStackEntry topFr = getSupportFragmentManager().getBackStackEntryAt(num - 2);
-            String name = topFr.getName();            
+            String name = topFr.getName();
             backStack(name);
             getSupportFragmentManager().popBackStackImmediate();
-            return true;
+        }
+    }
+
+    private void checkBackStack(){
+        int num = getSupportFragmentManager().getBackStackEntryCount();
+        while (num >=2){
+            getSupportFragmentManager().popBackStackImmediate();
+            num--;
         }
     }
     
@@ -153,6 +181,10 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         setLayoutList();
         setUserProfile();
 
+        // 각 애드립 액티비티에 애드립 앱 키값을 필수로 넣어주어야 합니다.
+        _amanager = new AdlibManager(ADLIB_API_KEY);
+        _amanager.onCreate(this);
+
         if (Global.YOUTUBE_API_KEY.startsWith("YOUR_API_KEY")) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this)
                     .setMessage("Edit ApiKey.java and replace \"YOUR_API_KEY\" with your Applications Browser API Key")
@@ -170,7 +202,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
         } else if (savedInstanceState == null) {
             String tag=HOME;
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, new VideoFragment(), tag).addToBackStack(tag)
+                    .add(R.id.container, new VideoFragment(), tag).addToBackStack(tag)
                     .commit();
         }
 
@@ -208,7 +240,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SearchResultFragment fragment = new SearchResultFragment();
                 fragment.setQuery(s);
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, fragment,"SEARCH_RESULT")
+                        .add(R.id.container, fragment,"SEARCH_RESULT")
                         .commit();
                 return false;
             }
@@ -233,7 +265,7 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             @Override
             public void onClick(View v) {
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new SearchFragment(),"SEARCH")
+                        .add(R.id.container, new SearchFragment(),"SEARCH")
                         .commit();
             }
         });
@@ -317,6 +349,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
             case R.id.settingButton:
                 toolbar.setTitle("설정");
                 tag =SET;
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new SettingFragment(), tag).addToBackStack(tag)
                         .commit();
@@ -340,14 +374,18 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 toolbar.setTitle("홈");
                 tag = HOME;
                 setLayoutBackgroundColor(HOME_LAYOUT);
+
+                
                 getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.container, new VideoFragment(), tag).addToBackStack(tag)
+                        .replace(R.id.container, new VideoFragment(), tag)
                         .commit();
                 break;
             case R.id.playlistButton:
                 toolbar.setTitle("재생목록");
                 tag =PLAYLIST;
                 setLayoutBackgroundColor(PLAYLIST_LAYOUT);
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new PlayListFragment(),tag).addToBackStack(tag)
                         .commit();
@@ -356,6 +394,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 toolbar.setTitle("즐겨찾기");
                 tag =FAVORITE;
                 setLayoutBackgroundColor(FAVORITE_LAYOUT);
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new FavoriteFragment(),tag).addToBackStack(tag)
                         .commit();
@@ -364,6 +404,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 toolbar.setTitle("추천영상");
                 tag=RECOMMEND;
                 setLayoutBackgroundColor(FEATURED_LAYOUT);
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new RecommendFragment(), tag).addToBackStack(tag)
                         .commit();
@@ -373,6 +415,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 tag=DLOG;
                 toolbar.setTitle("잠뜰로그");
                 setLayoutBackgroundColor(BJLOG_LAYOUT);
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new BjLogFragment(), tag).addToBackStack(tag)
                         .commit();
@@ -381,6 +425,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 tag=COMMUNITY;
                 toolbar.setTitle("커뮤니티");
                 setLayoutBackgroundColor(COMMUNITY_LAYOUT);
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, new CommunityFragment(), tag).addToBackStack(tag)
                         .commit();
@@ -393,6 +439,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr1 = new SandboxNetworkFragment();
                 fr1.setSandboxId("UUhQ-VMvdGrYZxviQVMTJOHg");
                 fr1.setSandboxCh("UChQ-VMvdGrYZxviQVMTJOHg");
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container,fr1, tag).addToBackStack(tag)
                         .commit();
@@ -404,6 +452,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr2 = new SandboxNetworkFragment();
                 fr2.setSandboxId("UUtCnnCUn9IDDQRU9_04JD3g");
                 fr2.setSandboxCh("UCtCnnCUn9IDDQRU9_04JD3g");
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr2, tag).addToBackStack(tag)
                         .commit();
@@ -415,6 +465,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr3 = new SandboxNetworkFragment();
                 fr3.setSandboxId("UUEPuItFWOOJ2o5hTu65NlEg");
                 fr3.setSandboxCh("UCEPuItFWOOJ2o5hTu65NlEg");
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr3, tag).addToBackStack(tag)
                         .commit();
@@ -426,6 +478,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr4 = new SandboxNetworkFragment();
                 fr4.setSandboxId("UUxmBxNybpaLO7x61dm0oD8w");
                 fr4.setSandboxCh("UCxmBxNybpaLO7x61dm0oD8w");
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr4, tag).addToBackStack(tag)
                         .commit();
@@ -437,6 +491,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr5 = new SandboxNetworkFragment();
                 fr5.setSandboxId("UUT_Sf9z6Cqy11VHOfbnQPNQ");
                 fr5.setSandboxCh("UCT_Sf9z6Cqy11VHOfbnQPNQ");
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr5, tag).addToBackStack(tag)
                         .commit();
@@ -448,6 +504,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr6 = new SandboxNetworkFragment();
                 fr6.setSandboxId("UUiwOunGuqfKjcLIBsteAAJQ");
                 fr6.setSandboxCh("UCiwOunGuqfKjcLIBsteAAJQ");
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr6, tag).addToBackStack(tag)
                         .commit();
@@ -459,6 +517,8 @@ public class HomeActivity extends ActionBarActivity implements View.OnClickListe
                 SandboxNetworkFragment fr7 = new SandboxNetworkFragment();
                 fr7.setSandboxId("UUt51IEo3ZxxOysVAG_ylR6w");
                 fr7.setSandboxCh("UCt51IEo3ZxxOysVAG_ylR6w");
+
+                checkBackStack();
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.container, fr7, tag).addToBackStack(tag)
                         .commit();

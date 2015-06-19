@@ -1,6 +1,7 @@
 package com.projecty.sleepgroundbox.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -66,6 +67,21 @@ public class PlayListFragment extends Fragment {
 
         // start loading the first page of our playlist
         AsyncTask async = new GetPlaylistAsyncTask() {
+            ProgressDialog dialog;
+
+            @Override
+            protected void onPreExecute() {
+                dialog = new ProgressDialog(getActivity());
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMessage("잠시만 기다려주세요...");
+                dialog.setIndeterminate(true);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+
+                super.onPreExecute();
+
+            }            
+            
             @Override
             public EtagCache getEtagCache() {
                 return mEtagCache;
@@ -73,6 +89,8 @@ public class PlayListFragment extends Fragment {
 
             @Override
             public void onPostExecute(JSONObject result) {
+
+                dialog.dismiss();
                 handlePlaylistResult(result);
             }
         }.execute(Global.YOUTUBE_PLAYLIST, null);

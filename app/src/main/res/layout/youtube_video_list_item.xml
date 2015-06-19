@@ -26,11 +26,12 @@
 
                 <ImageView
                     android:id="@+id/video_thumbnail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="74dp"
+                    android:layout_width="144dp"
+                    android:layout_height="wrap_content"
                     android:scaleType="fitXY"
                     android:adjustViewBounds="true"
-                    android:layout_alignParentTop="true" />
+                    android:layout_alignParentTop="true"
+                    />
 
                 <TextView
                     android:id="@+id/duration"

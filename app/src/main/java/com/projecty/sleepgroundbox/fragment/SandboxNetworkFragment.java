@@ -1,6 +1,7 @@
 package com.projecty.sleepgroundbox.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -98,6 +99,21 @@ public class SandboxNetworkFragment extends Fragment implements View.OnClickList
         }
 //        // start loading the first page of our playlist
         aVideo = new GetSandboxVideoAsyncTask(){
+            ProgressDialog dialog;
+
+            @Override
+            protected void onPreExecute() {
+                dialog = new ProgressDialog(getActivity());
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMessage("잠시만 기다려주세요...");
+                dialog.setIndeterminate(true);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+
+                super.onPreExecute();
+
+            }
+
             @Override
             public EtagCache getEtagCache() {
                 return mEtagCache;
@@ -105,6 +121,8 @@ public class SandboxNetworkFragment extends Fragment implements View.OnClickList
 
             @Override
             public void onPostExecute(JSONObject result) {
+                
+                dialog.dismiss();
 
                 handleVideoResult(result);
             }

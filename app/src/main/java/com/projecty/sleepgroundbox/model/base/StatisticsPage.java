@@ -23,7 +23,10 @@ public abstract class StatisticsPage {
 
         for (int i = 0; i < jsonItems.length(); i++) {
             JSONObject item = jsonItems.getJSONObject(i);
-            items.add( getStatisticsItem(item));
+            StatisticsItem insertItem = getStatisticsItem(item);
+            if (insertItem.title != "Private video"){
+                items.add(insertItem);
+            }
         }
     }
 
@@ -33,7 +36,10 @@ public abstract class StatisticsPage {
 
         for (int i = 0; i < jsonItems.length(); i++) {
             JSONObject item = jsonItems.getJSONObject(i);
-            items.add( getStatisticsItem(item));
+            StatisticsItem insertItem = getStatisticsItem(item);
+            if (insertItem.title != "Private video"){
+                items.add(insertItem);
+            }
         }
     }
 

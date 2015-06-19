@@ -1,6 +1,7 @@
 package com.projecty.sleepgroundbox.fragment;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -178,6 +179,20 @@ public class RecommendFragment extends Fragment {
         }
 
         AsyncTask async = new GetRecommandlistAsyncTask() {
+            ProgressDialog dialog;
+
+            @Override
+            protected void onPreExecute() {
+                dialog = new ProgressDialog(getActivity());
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                dialog.setMessage("잠시만 기다려주세요...");
+                dialog.setIndeterminate(true);
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.show();
+
+                super.onPreExecute();
+
+            }
             @Override
             public EtagCache getEtagCache() {
                 return mEtagCache;
@@ -185,6 +200,7 @@ public class RecommendFragment extends Fragment {
 
             @Override
             public void onPostExecute(JSONObject result) {
+                dialog.dismiss();
 
                 try {
                     play_id = result.getString("video_id");
